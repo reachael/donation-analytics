@@ -24,10 +24,15 @@ def update_recipients(recipients, recipient, donation):
     If recipient does not have record, add it. 
     Otherwise add the donation to existing record.
     """
+    amount = float(donation[3])
+    # check the amount is integer or not, keep the original format
+    if int(amount) == amount:
+        amount = int(amount)
+
     if recipient in recipients:
-        recipients[recipient].append(float(donation[3]))
+        recipients[recipient].append(amount)
     else:
-        recipients[recipient] = [float(donation[3])]
+        recipients[recipient] = [amount]
 
 def get_recipient_stats(recipients, recipient, PERCENTILE):
     """
@@ -36,10 +41,7 @@ def get_recipient_stats(recipients, recipient, PERCENTILE):
     """
     amounts = recipients[recipient]
     q = int(round(np.percentile(amounts,PERCENTILE,interpolation='lower')))
-    total_amounts = sum(amounts)
-    if int(total_amounts) == total_amounts:
-        total_amounts = int(total_amounts)
-    return '|'.join([recipient, str(q), str(total_amounts), str(len(amounts))])
+    return '|'.join([recipient, str(q), str(sum(amounts)), str(len(amounts))])
 
 def is_valid_schema(CMTE_ID, NAME, ZIP_CODE, TRANSACTION_DT, TRANSACTION_AMT, OTHER_ID):
     """
@@ -55,6 +57,15 @@ def is_valid_schema(CMTE_ID, NAME, ZIP_CODE, TRANSACTION_DT, TRANSACTION_AMT, OT
                 return False
         return True
 
+def save_file(data, output_file):
+    """
+    Function to write data to putput file.
+    """
+    f = open(output_file,'a')
+    f.write("\n".join(data))
+    f.write("\n")
+    f.close()
+
 def process_repeat_donations(PERCENTILE, input_file, output_file):
     """
     Main function to process donations in the input files.
@@ -67,22 +78,17 @@ def process_repeat_donations(PERCENTILE, input_file, output_file):
     # store stats results for recipients
     results = []
     # the size of data to keep in buffer before iit writes to output file
-    chunk_size = 1
+    chunk_size = 1000
     count = 0
     context = open(input_file,"r")
     for line in context:
-        # check if there is any data
-        if line.strip():
-            record = line.split("|")
-            CMTE_ID = record[0]
-            NAME = record[7]
-            ZIP_CODE = record[10]
-            TRANSACTION_DT = record[13]
-            TRANSACTION_AMT = record[14]
-            OTHER_ID = record[15]
-        # skip the blank record
-        else:
-            continue
+        record = line.split("|")
+        CMTE_ID = record[0]
+        NAME = record[7]
+        ZIP_CODE = record[10]
+        TRANSACTION_DT = record[13]
+        TRANSACTION_AMT = record[14]
+        OTHER_ID = record[15]
         # skip if the data is in bad format
         if is_valid_schema(CMTE_ID, NAME, ZIP_CODE, TRANSACTION_DT, TRANSACTION_AMT, OTHER_ID):
             ZIP_CODE = ZIP_CODE[:5]
@@ -103,17 +109,8 @@ def process_repeat_donations(PERCENTILE, input_file, output_file):
        # skip if the fields are in bad format 
         else:
             continue
-    # save the data to putput file when buffer is not full
+    # save the data to putput file since there is data in the buffer
     save_file(results,output_file)
-
-def save_file(data, output_file):
-    """
-    Function to write data to putput file.
-    """
-    f = open(output_file,'a')
-    f.write("\n".join(data))
-    f.write("\n")
-    f.close()
 
 def main(argv):
     start_time= time.time()
