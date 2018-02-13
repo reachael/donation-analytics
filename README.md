@@ -5,7 +5,7 @@ There is one python script in the src directory, donation-analytics.py. To run t
 
 The script is to: 
 
-1. Lable repeat donors and store the min year for a repeat donor. A donor ( use comnination of name and zip code) is defined as repeat donor if he have made donations in any prior years.
+1. Lable repeat donors and store the min year for a repeat donor. A donor (defined as comnination of name and zip code) is defined as repeat donor if he has made donations in any prior years.
 2. For each recipient, zip code and calendar year combination, calculate these three values for contributions coming from repeat donors:
 
 * total dollars received
@@ -31,9 +31,9 @@ In the itcont.txt file, the following fields are useful:
 
 Data is stored in `repeat_donors.txt`, Each line of this file contain these fields:
 
-* recipient of the contribution (or `CMTE_ID` from the input file)
-* 5-digit zip code of the contributor (or the first five characters of the `ZIP_CODE` field from the input file)
+* recipient of the contribution 
+* 5-digit zip code of the contributor 
 * 4-digit year of the contribution
-* running percentile of contributions received from repeat donors to a recipient streamed in so far for this zip code and calendar year. Percentile calculations should be rounded to the whole dollar (drop anything below $.50 and round anything from $.50 and up to the next dollar) 
+* running percentile of contributions received from repeat donors to a recipient streamed in so far for this zip code and calendar year
 * total amount of contributions received by recipient from the contributor's zip code streamed in so far in this calendar year from repeat donors
 * total number of transactions received by recipient from the contributor's zip code streamed in so far this calendar year from repeat donors
