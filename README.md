@@ -38,6 +38,13 @@ Data is stored in `repeat_donors.txt`, Each line of this file contain these fiel
 * total amount received by recipient from the contributor's zip code streamed in so far in this calendar year from repeat donors
 * total number of transactions received by recipient from the contributor's zip code streamed in so far this calendar year from repeat donors
 
-## brief description of functions
+## Brief description of approches
 
-1. `update_donors`
+`process_repeat_donations` is the main function where I use donors and recipients dictionaries to track history of donors and recipients.
+Donors dictionary stores a donor ( defined as combination of name and zipcode) and the corresponding min year he made donations in so far from streaming data. 
+Recipients dictionary stores a recipient (defined as combination of cmte_id, zipcode and transaction year) and contribution amounts from repeat donors 
+( defined as donors who made any donations in any prior year) in so far from streaming data.
+First, read data from input file, valid the data with `is_valid_schema` function. If the data is valid, update the donors dictionary with `update_donors` function.
+Then check if the donation is from repeat donor or not. If it is then use `update_recipients` and `get_recipient_stats` functions to update recipients dictionary 
+and return the recipient's stats described in the Outfile part. While processing the data, I store the final results in the buffer before it is full. Use `save_file` 
+function to save data in output file and empty the buffer when it is full. 
