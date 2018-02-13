@@ -37,7 +37,7 @@ Data is stored in `repeat_donors.txt`, Each line of this file contain these fiel
 * total amount received by recipient from the contributor's zip code streamed in so far in this calendar year from repeat donors
 * total number of transactions received by recipient from the contributor's zip code streamed in so far this calendar year from repeat donors
 
-## Brief description of approches
+## Brief description of approaches
 
 `process_repeat_donations` is the main function where I use donors and recipients dictionaries to track history of donors and recipients. 
 
