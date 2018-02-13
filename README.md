@@ -1,7 +1,6 @@
 # Coding Summary
 
-I used Python 2.7.12 for this coding challenge. In the challenge I used sys, time, os, numpy and datetime libraries.
-There is one python script in the src directory, donation-analytics.py. To run the script, execute run.sh.
+I used Python 2.7.12 for this coding challenge. In the challenge I used sys, time, os, numpy and datetime libraries.There is one python script in the src directory, that is donation-analytics.py. To run the script, execute run.sh.
 
 The script is to: 
 
@@ -40,9 +39,7 @@ Data is stored in `repeat_donors.txt`, Each line of this file contain these fiel
 
 ## Brief description of approches
 
-`process_repeat_donations` is the main function where I use donors and recipients dictionaries to track history of donors and recipients.
-Donors dictionary stores a donor ( defined as combination of name and zipcode) and the corresponding min year he made donations in so far from streaming data. 
-Recipients dictionary stores a recipient (defined as combination of cmte_id, zipcode and transaction year) and contribution amounts from repeat donors 
+`process_repeat_donations` is the main function where I use donors and recipients dictionaries to track history of donors and recipients. Donors dictionary stores a donor ( defined as combination of name and zipcode) and the corresponding min year he made donations in so far from streaming data. Recipients dictionary stores a recipient (defined as combination of cmte_id, zipcode and transaction year) and contribution amounts from repeat donors 
 ( defined as donors who made any donations in any prior year) in so far from streaming data.
 First, read data from input file, valid the data with `is_valid_schema` function. If the data is valid, update the donors dictionary with `update_donors` function.
 Then check if the donation is from repeat donor or not. If it is then use `update_recipients` and `get_recipient_stats` functions to update recipients dictionary 
